@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="MAIN" Id="{869cc47a-f229-4c2a-a727-d4b382bc7f7f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fileOpen : FB_FileOpen;
+	fileWrite : FB_FileWrite;
+	fileClose : FB_FileClose;
+	step : DINT := 0;
+	handle : UINT;
+	buffer : ARRAY[1..10] OF BYTE := [65, 66, 67, 13, 10];
+	busy : BOOL;
+	error : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// write to a file as a simple test
+CASE step OF
+	0:
+		fileOpen(
+			sNetId:= '', 
+			sPathName:= 'C:\TwinCAT\test.txt', 
+			nMode:= FOPEN_MODEWRITE, 
+			ePath:= PATH_GENERIC, 
+			bExecute:= TRUE, 
+			tTimeout:= T#5S, 
+			bBusy=> busy, 
+			bError=> error, 
+			nErrId=> , 
+			hFile=> handle);
+			
+			IF NOT fileOpen.bBusy THEN
+				step := step + 1;
+			END_IF
+			
+	1:
+			fileOpen(bExecute := FALSE);
+			step := step + 1;
+	2:
+		fileWrite(
+			sNetId:= '', 
+			hFile:= handle, 
+			pWriteBuff:= ADR(buffer), 
+			cbWriteLen:= 6, 
+			bExecute:= TRUE, 
+			tTimeout:= T#5S, 
+			bBusy=> busy, 
+			bError=> error, 
+			nErrId=> , 
+			cbWrite=> );
+		IF NOT fileWrite.bBusy THEN
+			step := step + 1;
+		END_IF
+	3:
+		fileWrite(bExecute := FALSE);
+		step := step + 1;
+	4:
+		fileClose(
+			sNetId:= '', 
+			hFile:= handle, 
+			bExecute:= TRUE, 
+			tTimeout:= T#5S, 
+			bBusy=> busy, 
+			bError=> error, 
+			nErrId=> );
+		IF NOT fileClose.bBusy THEN
+			step := step + 1;
+		END_IF
+	5:
+		fileClose(bExecute := FALSE);
+		step := step + 1;
+END_CASE
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="107" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="49" Count="9" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="32" Count="9" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="89" Count="1" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="94" Count="6" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="105" Count="1" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="101" Count="2" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
