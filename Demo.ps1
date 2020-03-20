@@ -5,6 +5,7 @@ Import-Module '.\Utilities.psm1'
 
 # Add a message filter as described in https://download.beckhoff.com/download/Document/automation/twincat3/AutomationInterface_pdf_EN.pdf
 # See section 4.2.5
+Add-MessageFilter
 [EnvDteUtils.MessageFilter]::Register()
 
 # This closes any open instances of Visual Studio
