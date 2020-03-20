@@ -23,5 +23,5 @@
 }
 
 function Add-MessageFilter {
-    Add-Type -TypeDefinition (Get-Content 'MessageFilter.cs' -Raw)
+    Add-Type -TypeDefinition (Get-Content '$PSScriptRoot\MessageFilter.cs' -Raw)
 }
