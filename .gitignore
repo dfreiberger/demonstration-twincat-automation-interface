@@ -283,3 +283,5 @@ _Boot/
 _CompileInfo/
 _Libraries/
 LineIDs.dbg
+
+project/
